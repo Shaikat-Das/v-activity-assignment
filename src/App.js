@@ -1,25 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { createContext, useState } from 'react';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Link,
+  Route,
+} from "react-router-dom";
 
-function App() {
+import Header from '../src/Components/Header/Header'
+import Home from '../src/Components/Home/Home'
+import Admin from '../src/Components/Admin/Admin'
+import Login from '../src/Components/Login/Login'
+import Registration from '../src/Components/Registration/Registration'
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+
+
+
+
+// log in page theke information ante
+export const UserContext = createContext();
+
+function App(props) {
+  // log in user er jonno state declaration
+
+  const [signedInUser, setSignedInUser] = useState({});
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // user er information different route a use korer jonno context api set 
+    <UserContext.Provider value={[signedInUser, setSignedInUser]}>
+      <Router>
+     
+              <Header></Header>
+               
+              <Switch>
+                    <Route path="/Home">
+                      <Home></Home>
+                    </Route>
+
+                    <Route path="/Login">
+                    <Login></Login>
+                    </Route>
+
+                    <PrivateRoute path="/Registration">
+                      <Registration></Registration>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/Admin">
+                    <Admin></Admin>
+                    </PrivateRoute>
+
+                    <Route exact path="/">
+                      <Home></Home>
+                    </Route>
+              </Switch>  
+            </Router>   
+    </UserContext.Provider>
   );
 }
 
